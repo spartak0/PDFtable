@@ -106,9 +106,11 @@ class PersonGenerator {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun fetchMiddleName(): Map<String, List<String>> =
         YamlReader().getYamlFromRes("middle_name.yml") as Map<String, List<String>>
 
+    @Suppress("UNCHECKED_CAST")
     private fun fetchStreets(): List<String> {
         val map = YamlReader().getYamlFromRes("streets.yml") as Map<String, List<String>>
         return map["street_title"]!!
