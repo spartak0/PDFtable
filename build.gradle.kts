@@ -23,6 +23,9 @@ dependencies {
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.2")
+
+    implementation("com.itextpdf:itext7-core:7.2.3")
+    implementation("org.slf4j:slf4j-nop:2.0.5")
 }
 
 tasks.test {

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/kotlin/utils/PdfHandler.kt" charset="UTF-8" />
+    <file url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.itextpdf/itextg/5.5.10/88b091a565694acaea613be992823387958c8c33/itextg-5.5.10-sources.jar!/com/itextpdf/text/pdf/BaseFont.java" charset="UTF-16" />
+  </component>
+</project>

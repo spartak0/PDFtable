@@ -1,40 +1,70 @@
+package data.services
+
+import utils.YamlReader
 import io.github.serpro69.kfaker.Faker
 import io.github.serpro69.kfaker.fakerConfig
+import data.models.PersonEntity
 
 class PersonGenerator {
+    private val config = fakerConfig { locale = "ru" }
+    private val generator = Faker(config)
+
     private val middleNameMap by lazy { fetchMiddleName() }
     private val maleMiddleName = middleNameMap["male_middle_name"] as List<String>
     private val femaleMiddleName = middleNameMap["female_middle_name"] as List<String>
-    private val config = fakerConfig { locale = "ru" }
-    private val generator = Faker(config)
+
+    private val streets by lazy { fetchStreets() }
 
     init {
         generator.unique.configuration {
             enable(generator::name)
-            enable(generator::address)
-
         }
     }
 
-    fun generatePerson(): Person {
+
+    fun generatePerson(): PersonEntity {
         val gender = generateGender()
         val name = generateName(gender)
         val surname = generateSurname(gender)
         val middleName = generateMiddleName(gender)
-        val city = generateCity()
+        val birthPlace = generateCity()
         val age = generateAge()
         val dob = dobByAge(age)
-        generator.name.nameWithMiddle()
-        return Person(
+        val index = generateIndex()
+        val country = generateCountry()
+        val city = generateCity()
+        val street = generateStreet()
+        val buildingNumber = generateBuildingNumber()
+        val apartment = generateApartment()
+        return PersonEntity(
             name = name,
             lastName = surname,
             middleName = middleName,
             age = age,
             gender = gender,
             dob = dob,
-            city = city
+            birthPlace = birthPlace,
+            index = index,
+            country = country,
+            city = city,
+            street = street,
+            buildingNumber = buildingNumber,
+            apartment = apartment
         )
     }
+
+    private fun generateApartment() = generator.random.nextInt(1..300)
+
+    private fun generateBuildingNumber() = generator.random.nextInt(1..100)
+
+    private fun generateStreet():String{
+        val index = generator.random.nextInt(streets.indices)
+        return streets[index]
+    }
+
+    private fun generateIndex() = generator.random.nextInt(100000..999999).toString()
+
+    private fun generateCountry() = "Россия"
 
 
     private fun generateGender(): String = generator.gender.shortBinaryTypes()
@@ -70,10 +100,19 @@ class PersonGenerator {
             maleMiddleName[index]
         }
 
-        else -> ""
+        else -> {
+            val index = generator.random.nextInt(maleMiddleName.indices)
+            maleMiddleName[index]
+        }
     }
 
     private fun fetchMiddleName(): Map<String, List<String>> =
         YamlReader().getYamlFromRes("middle_name.yml") as Map<String, List<String>>
+
+    private fun fetchStreets(): List<String> {
+        val map = YamlReader().getYamlFromRes("streets.yml") as Map<String, List<String>>
+        return map["street_title"]!!
+    }
+
 
 }
